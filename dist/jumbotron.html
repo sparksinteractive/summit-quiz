@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html> <!--<![endif]-->
+<head>
+        <!--************** Meta Tag Information **************-->
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+        <meta name="keywords" content="Sparks is a Global Brand Experience Agency">
+        <meta name="description" content="Sparks is a Global Brand Experience Agency">
+
+        <!--************** OpenGraph Tag Information **************-->
+        <meta property="og:title" content="Sparks Creative Technology">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="http://impracticalapplications.com/img/01.gif">
+        <meta property="og:url" content="https://wearesparks.com/">
+        <meta property="og:description" content="Sparks is a Global Brand Experience Agency">
+
+        <!--************** Page Title **************-->
+        <title>Sparks Creative Technology || SocketIO</title>
+
+        <link rel="apple-touch-icon" sizes="180x180" href="/img/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+        <link rel="manifest" href="/img/favicon/site.webmanifest">
+        <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#fc533e">
+        <link rel="shortcut icon" href="/img/favicon/favicon.ico">
+        <meta name="msapplication-TileColor" content="#ffffff">
+        <meta name="msapplication-config" content="/img/favicon/browserconfig.xml">
+        <meta name="theme-color" content="#ffffff">
+        <!--************** Page Title **************-->
+
+        <!--************** STYLESHEETS AND RESETS **************-->
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+        <!--[if lt IE 9]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script> <![endif]-->
+
+
+
+</head>
+
+<body>
+
+
+    <main id="root">
+
+        <div id="votes">
+            <div class="section">
+                <div class="section-header">
+                    Question 1
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">
+                    Question 2
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">
+                    Question 3
+                </div>
+            </div>
+            <div class="section">
+                <div class="section-header">
+                    Question 4
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+
+<!-- jQuery -->
+<script src="js/vendor/jquery-3.1.1.min.js"></script>
+<script src="js/vendor/jquery-ui.min.js"></script>
+
+<!-- Plugins -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+
+<!-- Custom JS -->
+<script src="js/main.js"></script>
+
+<!-- Inline JS -->
+<script>
+    $(document).ready(function() {
+        var socket = io.connect();
+
+        socket.on('clientEmit', function(data){
+            console.log("received client emit!!!", data);
+
+            $('#root').prepend('<div class="draggable draggable-'+data+'"><b>'+ "SELF" +'</b></div>');
+
+            $( ".draggable" ).draggable({
+                addClasses: false,
+                stop: function(e, ui) {
+                    var id = $(e.target).attr('class').split(' ')[1];
+                    console.log(id, ui.position);
+                    // console.log(socket.id);
+                    socket.emit('sendToServer', {'id': id, 'x':ui.position.left, 'y':ui.position.top});
+                }
+            });
+        })
+
+        socket.on('clientCounter', function(data) {
+            console.log("clients connected: ", data);
+            // console.log(socket.id);
+            // $('#root').empty();
+            for (var i = 0; i < data; i++) {
+                // document.getElementById('root').insertAdjacentHTML('beforeend', '<div class="draggable"><b>'+ data +'</b></div>')
+
+                // $('#root').prepend('<div class="draggable draggable-'+i+'"><b>'+ i +'</b></div>');
+                $('#root').prepend('<div class="draggable-'+i+'"><b>'+ i +'</b></div>');
+
+            }
+
+        });
+
+        socket.on('receiveFromServer', function(data) {
+            // console.log("received from server", data.id, data.x, data.y);
+            $('.' + data.id).css({'left': data.x, 'top': data.y});
+        });
+
+        $('.cta').on('click', function() {
+            console.log("cta clicked");
+            socket.emit('sendToServer', {'test':'val'})
+        });
+    });
+</script>
+
+
+</body>
+
+</html>
