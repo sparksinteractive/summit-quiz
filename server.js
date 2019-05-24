@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const auth = require('./auth');
-const redisClient = require('./redis');
+// const redisClient = require('./redis');
 
 // Socket Setup
 const io = require('socket.io')(server);
@@ -128,9 +128,9 @@ io.on('connection', function(client) {
         // clientInfo.clientId = client.id;
         // clientInfo.timestamp = Date.now();
 
-        var k = "customID";
-        var v = data.customID;
-        await redisClient.setAsync(k, JSON.stringify(v));
+        // var k = "customID";
+        // var v = data.customID;
+        // await redisClient.setAsync(k, JSON.stringify(v));
 
 
 
@@ -185,6 +185,6 @@ io.on('connection', function(client) {
 
 
 // Start Express
-server.listen(3000, function() {
+server.listen(8080, function() {
     console.log('listening on *:3000');
 });
