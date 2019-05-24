@@ -22,8 +22,14 @@ auth(passport);
 app.use(passport.initialize());
 
 
+// Direct to Login View
+app.get('/login', (req, res) => {
+    console.log(req, res);
+});
+
+
 // Auth with Google Account
-app.get('/login', passport.authenticate('google', {
+app.get('/auth', passport.authenticate('google', {
     scope: ['https://www.googleapis.com/auth/userinfo.profile']
 }));
 
@@ -128,6 +134,10 @@ io.on('connection', function(client) {
         // clientInfo.clientId = client.id;
         // clientInfo.timestamp = Date.now();
 
+
+        //
+        // TODO: Store in Redis
+        //
         // var k = "customID";
         // var v = data.customID;
         // await redisClient.setAsync(k, JSON.stringify(v));
