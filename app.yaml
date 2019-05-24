@@ -1,0 +1,10 @@
+runtime: nodejs
+env: flex
+handlers:
+  - url: /
+    static_dir: dist
+
+  - url: /.*
+    secure: always
+    redirect_http_response_code: 301
+    script: auto
