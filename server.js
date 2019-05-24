@@ -141,7 +141,7 @@ io.on('connection', function(client) {
             row.customId = data.customId;
             row.clientId = client.id;
             row.timestamp = Date.now();
-        } else if search(data.customId, users) === undefined() {
+        } else if (search(data.customId, users) === undefined) {
             var row = new Object();
             row.name = "lorem"
             row.uid = data.customId;

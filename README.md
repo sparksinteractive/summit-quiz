@@ -14,6 +14,12 @@ TODO:
 * Jumbotron UI
 * Quiz
 
+### Deployment:
+
+**App Engine:**
+```
+gcloud app deploy
+```
 
 ### Usage:
 
