@@ -61,7 +61,7 @@ app.get('/cookie', (req, res) => {
     if (req.session.token) {
         res.cookie('token', req.session.token);
         res.json({
-            cookie: req.session.token
+            uid: req.session.token
         });
     } else {
         res.cookie('token', '')
@@ -141,7 +141,7 @@ io.on('connection', function(client) {
             row.customId = data.customId;
             row.clientId = client.id;
             row.timestamp = Date.now();
-        } else {
+        } else if search(data.customId, users) === undefined() {
             var row = new Object();
             row.name = "lorem"
             row.uid = data.customId;
