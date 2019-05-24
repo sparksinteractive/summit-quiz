@@ -21,7 +21,7 @@ TODO:
 gcloud app deploy
 ```
 
-### Usage:
+### Development:
 
 **Docker:**
 
