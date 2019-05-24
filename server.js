@@ -130,7 +130,7 @@ io.on('connection', function(client) {
 
         var k = "customID";
         var v = data.customID;
-        await redisClient.setAsync(key, JSON.stringify(value));
+        await redisClient.setAsync(k, JSON.stringify(v));
 
 
 
